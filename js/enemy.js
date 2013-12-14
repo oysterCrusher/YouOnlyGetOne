@@ -31,6 +31,11 @@ yogo.Enemy.prototype.update = function(dt) {
         this.y = this.nextY;
         this.findNextTile();
         this.progress -= 100;
+        // Have we reached the core?
+        if (this.map.isCore(this.x, this.y)) {
+            this.map.damageCore(this.hp);
+            this.takeDamage(this.hp);
+        }
     }
 
     this.dX = Math.round((this.x + (this.nextX - this.x) * (this.progress / 100)) * 20 + 10 - this.halfWidth);

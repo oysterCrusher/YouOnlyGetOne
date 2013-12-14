@@ -13,7 +13,7 @@ yogo.Tower = function(x0, y0, towerName, enemies) {
     // Damage dealt over 1000 ms
     this.dmg = 70;
 
-    this.rate = 2;
+//    this.rate = 2;
     this.active = false;
     this.sX = 40;
     this.target = null;
@@ -64,8 +64,7 @@ yogo.Tower.prototype.update = function(dt) {
 };
 
 yogo.Tower.prototype.searchForTarget = function() {
-    var distToTarget = this.range,
-        distToEnemy = 0;
+    var distToTarget = this.range;
 
     this.target = null;
 

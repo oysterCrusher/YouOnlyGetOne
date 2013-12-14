@@ -7,7 +7,8 @@ yogo.Map = function() {
         tileWidth = 0,
         tileHeight = 0,
         coreX = 0,
-        coreY = 0;
+        coreY = 0,
+        coreHp = 1000;
 
     this.loadMap = function(n) {
         if (n < 0 && n > yogo.mapList.length) {
@@ -122,6 +123,14 @@ yogo.Map = function() {
         }
     };
 
+    this.isCore = function(x, y) {
+        return (x >= coreX && x <= coreX + 1 && y >= coreY && y <= coreY + 1);
+    };
+
+    this.damageCore = function(d) {
+        coreHp -= d;
+    };
+
     this.render = function() {
         // All the tiles
         for (var y = 0; y < height; y++) {
@@ -155,6 +164,9 @@ yogo.Map = function() {
             40,
             40
         );
+        // Core health
+        yogo.ctx.fillStyle = 'green';
+        yogo.ctx.fillRect(coreX * 20, coreY * 20 + 15, Math.max(40 * coreHp / 1000, 0), 9);
     }
 
 };

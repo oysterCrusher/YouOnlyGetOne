@@ -3,7 +3,7 @@ yogo.Enemies = function(map) {
     var pool = [];
 
     this.spawn = function(x0, y0, name) {
-        pool.push(new yogo.Enemy(x0, y0, name, 40, map));
+        pool.push(new yogo.Enemy(x0, y0, name, 240, map));
     };
 
     this.update = function(dt) {

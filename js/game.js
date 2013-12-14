@@ -14,9 +14,9 @@ yogo.Game = function() {
         enemies.spawn(-1, 20, 'enemy1');
     };
 
-    this.exit = function() {
-        console.log('game exit');
-    };
+//    this.exit = function() {
+//        console.log('game exit');
+//    };
 
     this.onDown = function(c) {
         // Convert mouse coords to tile coords

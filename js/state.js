@@ -2,7 +2,7 @@ yogo.State = function() {
 
     var states = {},
         currentState = null,
-        previousState = null,
+//        previousState = null,
         isDown = false,
         lastTime = 0,
         dt = 0,
@@ -54,9 +54,9 @@ yogo.State = function() {
         yogo.canvas.addEventListener('mousemove', mousemoveHandler, false);
     };
 
-    this.unbindMove = function() {
-        yogo.canvas.removeEventListener('mousemove', mousemoveHandler, false);
-    };
+//    this.unbindMove = function() {
+//        yogo.canvas.removeEventListener('mousemove', mousemoveHandler, false);
+//    };
 
     function mousedownHandler(evt) {
         if (isDown) { return; }
