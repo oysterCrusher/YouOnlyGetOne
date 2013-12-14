@@ -22,6 +22,7 @@ yogo.State = function() {
 
         // Bind the mouse
         this.bindDown();
+        this.bindMove();
 
         // Start update loop
         this.rafUpdate(0);
@@ -62,14 +63,12 @@ yogo.State = function() {
         isDown = true;
 
         _this.bindUp();
-        _this.bindMove();
 
         currentState.onDown(getMouseCoords(evt));
     }
 
     function mouseupHandler() {
         isDown = false;
-        _this.unbindMove();
         _this.unbindUp();
         currentState.onUp();
     }

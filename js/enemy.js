@@ -91,11 +91,11 @@ yogo.Enemy.prototype.render = function() {
             this.width,
             this.height
         );
-        if (this.hp < 100) {
+        if (this.hp < 1000) {
             yogo.ctx.fillStyle = 'red';
             yogo.ctx.fillRect(this.dX, this.dY - 8, this.width, 3);
             yogo.ctx.fillStyle = 'green';
-            yogo.ctx.fillRect(this.dX, this.dY - 8, this.width * this.hp / 100, 3);
+            yogo.ctx.fillRect(this.dX, this.dY - 8, this.width * this.hp / 1000, 3);
         }
     }
 };

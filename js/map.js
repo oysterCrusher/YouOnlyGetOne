@@ -6,8 +6,8 @@ yogo.Map = function() {
         height = 0,
         tileWidth = 0,
         tileHeight = 0,
-        targetX = 32,
-        targetY = 13;
+        coreX = 0,
+        coreY = 0;
 
     this.loadMap = function(n) {
         if (n < 0 && n > yogo.mapList.length) {
@@ -32,6 +32,11 @@ yogo.Map = function() {
             }
         }
 
+//        coreX = parseInt(yogo.mapList[n].coreX, 10);
+//        coreY = parseInt(yogo.mapList[n].coreY, 10);
+        coreX = yogo.mapList[n].coreX;
+        coreY =  yogo.mapList[n].coreY;
+
         this.updatePath();
     };
 
@@ -45,7 +50,7 @@ yogo.Map = function() {
 
     this.getPathValues = function(x, y) {
         if (x < 0 || y < 0 || x >= pathValues[0].length || y >= pathValues.length) {
-            return -1;
+            return 30000;
         } else {
             return pathValues[y][x];
         }
@@ -64,10 +69,18 @@ yogo.Map = function() {
         var nodeQueue = [],
             dist = 0,
             cX,
-            cY;
+            cY,
+            i;
 
-        pathValues[targetY][targetX] = dist;
-        nodeQueue.push([targetX, targetY]);
+        pathValues[coreY][coreX] = dist;
+        nodeQueue.push([coreX, coreY]);
+        pathValues[coreY+1][coreX] = dist;
+        nodeQueue.push([coreX, coreY+1]);
+        pathValues[coreY][coreX+1] = dist;
+        nodeQueue.push([coreX+1, coreY]);
+        pathValues[coreY+1][coreX+1] = dist;
+        nodeQueue.push([coreX+1, coreY+1]);
+
         while (nodeQueue.length > 0) {
             cX = nodeQueue[0][0];
             cY = nodeQueue[0][1];
@@ -88,7 +101,7 @@ yogo.Map = function() {
                 dirs.push([1, 0]);
             }
 
-            for (var i = 0; i < dirs.length; i++) {
+            for (i = 0; i < dirs.length; i++) {
                 if (tiles[cY+dirs[i][1]][cX+dirs[i][0]] === 3) {
                     if (dist < 10000) {
                         if (pathValues[cY+dirs[i][1]][cX+dirs[i][0]] > dist + 10001) {
@@ -110,13 +123,14 @@ yogo.Map = function() {
     };
 
     this.render = function() {
+        // All the tiles
         for (var y = 0; y < height; y++) {
             for (var x = 0; x < width; x++) {
                 if (tiles[y][x] === 0) {
                     continue;
                 }
                 yogo.ctx.drawImage(
-                    yogo.cache.sprites.tileset,
+                    yogo.cache.sprites['tileset'],
                     (tiles[y][x] - 1) * tileWidth,
                     0,
                     tileWidth,
@@ -128,6 +142,19 @@ yogo.Map = function() {
                 );
             }
         }
+
+        // The core
+        yogo.ctx.drawImage(
+            yogo.cache.sprites['core'],
+            0,
+            0,
+            40,
+            40,
+            coreX * 20,
+            coreY * 20,
+            40,
+            40
+        );
     }
 
 };

@@ -17,7 +17,7 @@ yogo.Tower = function(x0, y0, towerName, enemies) {
     this.active = false;
     this.sX = 40;
     this.target = null;
-    this.range = 3;
+    this.range = 3.2;
     this.isShooting = false;
 
     this.dX = this.x * 20;
@@ -45,13 +45,18 @@ yogo.Tower.prototype.isAt = function(x, y) {
 yogo.Tower.prototype.update = function(dt) {
     this.isShooting = false;
     if (this.active) {
+        // See if we need a new target
         if (this.target === null) {
             this.searchForTarget();
-        } else {
-            // See if the target has moved out of range
-            if (this.distanceToEnemy(this.target) > this.range) {
-                this.searchForTarget();
-            } else {
+        } else if (!this.target.isAlive()) {
+            this.searchForTarget();
+        } else if (this.distanceToEnemy(this.target) > this.range) {
+            this.searchForTarget();
+        }
+
+        // Do we have a target to shoot at?
+        if (this.target !== null) {
+            if (this.target.isAlive() && this.distanceToEnemy(this.target) <= this.range) {
                 this.shootTarget(dt);
             }
         }
@@ -93,6 +98,16 @@ yogo.Tower.prototype.shootTarget = function(dt) {
 };
 
 yogo.Tower.prototype.render = function() {
+
+    if (this.active) {
+        yogo.ctx.strokeStyle = 'rgba(10,10,10,0.3)';
+        yogo.ctx.fillStyle = 'rgba(40,40,40,0.2)';
+        yogo.ctx.beginPath();
+        yogo.ctx.arc(this.x * 20 + this.halfWidth, this.y * 20 + this.halfHeight, this.range * 20, 0, 2 * Math.PI, false);
+        yogo.ctx.fill();
+        yogo.ctx.stroke();
+    }
+
     yogo.ctx.drawImage(
         yogo.cache.sprites[this.spriteName],
         this.sX,
