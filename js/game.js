@@ -20,7 +20,11 @@ yogo.Game = function() {
         // Convert mouse coords to tile coords
         var tX = Math.floor(c[0] / 20),
             tY = Math.floor(c[1] / 20);
-        if (towers.checkSpawn(tX, tY)) {
+
+        // Check to see if the click was on a tower
+        if (towers.setActive(tX, tY)) {
+
+        } else if (towers.checkSpawn(tX, tY)) {
             towers.spawn(tX, tY, 'tower1');
         }
     };

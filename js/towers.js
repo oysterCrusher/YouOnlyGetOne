@@ -1,6 +1,8 @@
 yogo.Towers = function(map) {
 
-    var pool = [];
+    var pool = [],
+        currentActive = 0;
+
     this.map = map;
 
     this.checkSpawn = function(x0, y0) {
@@ -17,6 +19,21 @@ yogo.Towers = function(map) {
         this.map.setTileValue(x0, y0+1, 3);
         this.map.setTileValue(x0+1, y0+1, 3);
         this.map.updatePath();
+    };
+
+    this.setActive = function(x, y) {
+        // Loop through the pool to see if there is a tower at these coords
+        for (var i = 0; i < pool.length; i++) {
+            if (pool[i].isReady()) {
+                if (pool[i].isAt(x, y)) {
+                    pool[currentActive].setActive(false);
+                    pool[i].setActive(true);
+                    currentActive = i;
+                    return true;
+                }
+            }
+        }
+        return false;
     };
 
     this.update = function(dt) {
