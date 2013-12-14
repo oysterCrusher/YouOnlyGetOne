@@ -11,14 +11,23 @@ yogo.Tower = function(x0, y0, towerName, enemies) {
     this.halfHeight = this.height / 2;
 
     // Damage dealt over 1000 ms
-    this.dmg = 70;
+    this.dmg = 500;
 
 //    this.rate = 2;
     this.active = false;
     this.sX = 40;
     this.target = null;
+    this.angleToTarget = 0;
     this.range = 3.2;
     this.isShooting = false;
+
+    this.buildTime = 2000;
+    this.buildProgress = 0;
+
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = 39;
+    this.canvas.height = 39;
+    this.ctx = this.canvas.getContext('2d');
 
     this.dX = this.x * 20;
     this.dY = this.y * 20;
@@ -26,11 +35,6 @@ yogo.Tower = function(x0, y0, towerName, enemies) {
 
 yogo.Tower.prototype.setActive = function(b) {
     this.active = b;
-    if (this.active) {
-        this.sX = 0;
-    } else {
-        this.sX = 40;
-    }
     return this.active;
 };
 
@@ -44,22 +48,58 @@ yogo.Tower.prototype.isAt = function(x, y) {
 
 yogo.Tower.prototype.update = function(dt) {
     this.isShooting = false;
-    if (this.active) {
-        // See if we need a new target
-        if (this.target === null) {
-            this.searchForTarget();
-        } else if (!this.target.isAlive()) {
-            this.searchForTarget();
-        } else if (this.distanceToEnemy(this.target) > this.range) {
-            this.searchForTarget();
-        }
 
-        // Do we have a target to shoot at?
-        if (this.target !== null) {
-            if (this.target.isAlive() && this.distanceToEnemy(this.target) <= this.range) {
-                this.shootTarget(dt);
+    if (this.active) {
+        if (this.buildProgress < this.buildTime) {
+            this.buildProgress += dt;
+        } else {
+            // See if we need a new target
+            if (this.target === null) {
+                this.searchForTarget();
+            } else if (!this.target.isAlive()) {
+                this.searchForTarget();
+            } else if (this.distanceToEnemy(this.target) > this.range) {
+                this.searchForTarget();
+            }
+
+            // Do we have a target to shoot at?
+            if (this.target !== null) {
+                this.angleToTarget = this.getAngleToTarget();
+                if (this.target.isAlive() && this.distanceToEnemy(this.target) <= this.range) {
+                    this.shootTarget(dt);
+                }
             }
         }
+    }
+
+    this.updateSprite();
+};
+
+yogo.Tower.prototype.updateSprite = function() {
+    this.ctx.fillStyle = '#404B54';
+    this.ctx.fillRect(0, 0, 39, 39);
+    this.ctx.save();
+    this.ctx.translate(20, 20);
+    this.ctx.rotate(this.angleToTarget);
+    this.ctx.drawImage(
+        yogo.cache.sprites[this.spriteName],
+        0,
+        0,
+        this.width,
+        this.height,
+        -20,
+        -20,
+        this.width,
+        this.height
+    );
+    this.ctx.restore();
+    if (this.buildProgress < this.buildTime) {
+        this.ctx.fillStyle = 'rgba(0,150,0,0.6)';
+        this.ctx.beginPath();
+        this.ctx.moveTo(20, 20);
+        this.ctx.arc(20, 20, 35, -Math.PI / 2, Math.PI * (2 - 2 * this.buildProgress / this.buildTime - 0.5), false);
+        this.ctx.closePath();
+        this.ctx.fill();
     }
 };
 
@@ -96,6 +136,15 @@ yogo.Tower.prototype.shootTarget = function(dt) {
     }
 };
 
+yogo.Tower.prototype.getAngleToTarget = function() {
+    var ang = Math.atan((this.y + 1 - this.target.getPosition()[1]) / (this.x + 1 - this.target.getPosition()[0])) - Math.PI / 2;
+    if (this.x + 1 - this.target.getPosition()[0] > 0) {
+        return ang;
+    } else {
+        return ang - Math.PI;
+    }
+};
+
 yogo.Tower.prototype.render = function() {
 
     if (this.active) {
@@ -107,9 +156,16 @@ yogo.Tower.prototype.render = function() {
         yogo.ctx.stroke();
     }
 
+    if (!this.active || this.buildProgress < this.buildTime) {
+        this.sX = 40;
+    } else {
+        this.sX = 0;
+    }
+
+    // Draw the tower canvas
     yogo.ctx.drawImage(
-        yogo.cache.sprites[this.spriteName],
-        this.sX,
+        this.canvas,
+        0,
         0,
         this.width,
         this.height,

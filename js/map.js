@@ -1,6 +1,8 @@
 yogo.Map = function() {
 
     var tiles = [],
+        spawns,
+        enemies,
         pathValues = [],
         width = 0,
         height = 0,
@@ -8,13 +10,15 @@ yogo.Map = function() {
         tileHeight = 0,
         coreX = 0,
         coreY = 0,
-        coreHp = 1000;
+        coreHp = 1000,
+        timer = 0;
 
-    this.loadMap = function(n) {
+    this.loadMap = function(e, n) {
         if (n < 0 && n > yogo.mapList.length) {
             console.log('error loading map: map doesn\'t exist');
         }
 
+        enemies = e;
         console.log('loading map');
         // Load the tile data
         width = yogo.cache.maps[yogo.mapList[n].name].width;
@@ -33,10 +37,13 @@ yogo.Map = function() {
             }
         }
 
-//        coreX = parseInt(yogo.mapList[n].coreX, 10);
-//        coreY = parseInt(yogo.mapList[n].coreY, 10);
         coreX = yogo.mapList[n].coreX;
         coreY =  yogo.mapList[n].coreY;
+        spawns = yogo.mapList[n].spawns;
+
+        for (var i = 0; i < spawns.length; i++) {
+            spawns[i].nextSpawn = 0;
+        }
 
         this.updatePath();
     };
@@ -129,6 +136,21 @@ yogo.Map = function() {
 
     this.damageCore = function(d) {
         coreHp -= d;
+    };
+
+    this.update = function(dt) {
+        timer += dt;
+
+        // Go through each spawn point and see if anything is due to spawn
+        for (var i = 0; i < spawns.length; i++) {
+            if (spawns[i].nextSpawn >= spawns[i].queue.length) {
+                continue;
+            }
+            if (spawns[i].queue[spawns[i].nextSpawn].time * 1000 <= timer) {
+                enemies.spawn(spawns[i].x, spawns[i].y, spawns[i].queue[spawns[i].nextSpawn].name);
+                spawns[i].nextSpawn++;
+            }
+        }
     };
 
     this.render = function() {

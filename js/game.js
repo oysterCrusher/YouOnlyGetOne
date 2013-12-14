@@ -3,15 +3,15 @@ yogo.Game = function() {
     var map = new yogo.Map(),
         enemies = new yogo.Enemies(map),
         towers = new yogo.Towers(map, enemies),
-        selectionHighlightPosition = [50,50];
+        selectionHighlightPosition = [50,50],
+        money = 1000;
 
     this.init = function() {
-        map.loadMap(0);
+        map.loadMap(enemies, 0);
     };
 
     this.enter = function() {
-        enemies.spawn(-1, 10, 'enemy1');
-        enemies.spawn(-1, 20, 'enemy1');
+        console.log('entered game');
     };
 
 //    this.exit = function() {
@@ -46,6 +46,7 @@ yogo.Game = function() {
     };
 
     this.update = function(dt) {
+        map.update(dt);
         enemies.update(dt);
         towers.update(dt);
     };
