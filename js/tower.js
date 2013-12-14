@@ -15,7 +15,6 @@ yogo.Tower = function(x0, y0, towerName, enemies) {
 
 //    this.rate = 2;
     this.active = false;
-    this.sX = 40;
     this.target = null;
     this.angleToTarget = 0;
     this.range = 3.2;
@@ -109,9 +108,9 @@ yogo.Tower.prototype.searchForTarget = function() {
     this.target = null;
 
     for (var i = 0; i < this.enemyList.length; i++) {
-        if (this.enemyList[i].isAlive) {
-
+        if (this.enemyList[i].isAlive()) {
             if (this.distanceToEnemy(this.enemyList[i]) < distToTarget) {
+                distToTarget = this.distanceToEnemy(this.enemyList[i]);
                 this.target = this.enemyList[i];
             }
         }
@@ -154,12 +153,6 @@ yogo.Tower.prototype.render = function() {
         yogo.ctx.arc(this.x * 20 + this.halfWidth, this.y * 20 + this.halfHeight, this.range * 20, 0, 2 * Math.PI, false);
         yogo.ctx.fill();
         yogo.ctx.stroke();
-    }
-
-    if (!this.active || this.buildProgress < this.buildTime) {
-        this.sX = 40;
-    } else {
-        this.sX = 0;
     }
 
     // Draw the tower canvas
