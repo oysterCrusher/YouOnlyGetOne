@@ -2,7 +2,7 @@ yogo.Game = function() {
 
     var map = new yogo.Map(),
         enemies = new yogo.Enemies(map),
-        towers = new yogo.Towers(map);
+        towers = new yogo.Towers(map, enemies);
 
     this.init = function() {
         map.loadMap(0);
@@ -10,6 +10,7 @@ yogo.Game = function() {
 
     this.enter = function() {
         enemies.spawn(0, 4, 'enemy1');
+        enemies.spawn(13, 1, 'enemy1');
     };
 
     this.exit = function() {
@@ -43,6 +44,7 @@ yogo.Game = function() {
 
     this.update = function(dt) {
         enemies.update(dt);
+        towers.update(dt);
     };
 
     this.render = function() {

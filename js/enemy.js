@@ -10,6 +10,8 @@ yogo.Enemy = function(x0, y0, spriteName, speed, map) {
     this.dX = 0;
     this.dY = 0;
     this.map = map;
+    this.hp = 1000;
+    this.alive = true;
 
     this.spriteName = spriteName;
     // Size
@@ -59,16 +61,41 @@ yogo.Enemy.prototype.findNextTile = function() {
     }
 };
 
+yogo.Enemy.prototype.isAlive = function() {
+    return this.alive;
+};
+
+yogo.Enemy.prototype.getPosition = function() {
+    var xPos = (this.x + (this.nextX - this.x) * (this.progress / 100)) + 0.5;
+    var yPos = (this.y + (this.nextY - this.y) * (this.progress / 100)) + 0.5;
+    return [xPos, yPos];
+};
+
+yogo.Enemy.prototype.takeDamage = function(d) {
+    this.hp -= d;
+    if (this.hp <= 0) {
+        this.alive = false;
+    }
+};
+
 yogo.Enemy.prototype.render = function() {
-    yogo.ctx.drawImage(
-        yogo.cache.sprites[this.spriteName],
-        0,
-        0,
-        this.width,
-        this.height,
-        this.dX,
-        this.dY,
-        this.width,
-        this.height
-    );
+    if (this.alive) {
+        yogo.ctx.drawImage(
+            yogo.cache.sprites[this.spriteName],
+            0,
+            0,
+            this.width,
+            this.height,
+            this.dX,
+            this.dY,
+            this.width,
+            this.height
+        );
+        if (this.hp < 100) {
+            yogo.ctx.fillStyle = 'red';
+            yogo.ctx.fillRect(this.dX, this.dY - 8, this.width, 3);
+            yogo.ctx.fillStyle = 'green';
+            yogo.ctx.fillRect(this.dX, this.dY - 8, this.width * this.hp / 100, 3);
+        }
+    }
 };
