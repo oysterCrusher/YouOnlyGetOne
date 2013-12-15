@@ -42,7 +42,7 @@ window.onload = function() {
         }
     }
 
-    window.addEventListener('resize', checkResize, false);
+//    window.addEventListener('resize', checkResize, false);
 
     // Grab the loading image
     yogo.cache.sprites['loading'] = new Image();
@@ -63,7 +63,6 @@ window.onload = function() {
             yogo.cache.sprites[yogo.spriteList[i].name].onload = function() {
                 nSpritesRemaining--;
                 if (nSpritesRemaining === 0 && nMapsRemaining === 0) {
-                    console.log('all sprites loaded');
                     yogo.state.init();
                     yogo.state.start();
                 }
@@ -81,7 +80,6 @@ window.onload = function() {
                     nMapsRemaining--;
                     yogo.cache.maps[yogo.mapList[i].name] = JSON.parse(this.responseText);
                     if (nSpritesRemaining === 0 && nMapsRemaining === 0) {
-                        console.log('all maps loaded');
                         yogo.state.init();
                         yogo.state.start();
                     }

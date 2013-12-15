@@ -2,7 +2,7 @@ yogo.State = function() {
 
     var states = {},
         currentState = null,
-//        previousState = null,
+        previousState = null,
         isDown = false,
         lastTime = 0,
         dt = 0,
@@ -10,6 +10,8 @@ yogo.State = function() {
 
     this.init = function() {
         states.game = new yogo.Game();
+        states.title = new yogo.Title();
+        states.levels = new yogo.LevelSelect();
     };
 
     this.start = function() {
@@ -17,7 +19,7 @@ yogo.State = function() {
         states.game.init();
 
         // Start the first state
-        currentState = states.game;
+        currentState = states.title;
         currentState.enter();
 
         // Bind the mouse
@@ -35,8 +37,15 @@ yogo.State = function() {
         dt = Math.min(dt, 75);
         currentState.update(dt);
         currentState.render();
-        yogo.ctx.fillStyle = 'white';
-        yogo.ctx.fillText(parseInt(1000 / dt, 10).toString(), 10, 590);
+    };
+
+    this.changeState = function(newState) {
+        this.unbindUp();
+        isDown = false;
+        currentState.exit();
+        previousState = currentState;
+        currentState.enter();
+        currentState = states[newState];
     };
 
     // Set up all the mouse (and maybe touch inputs
@@ -65,7 +74,6 @@ yogo.State = function() {
         isDown = true;
 
         _this.bindUp();
-
         currentState.onDown(getMouseCoords(evt));
     }
 

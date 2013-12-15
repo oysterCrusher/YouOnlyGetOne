@@ -16,7 +16,6 @@ yogo.Game = function() {
     };
 
     this.enter = function() {
-        console.log('entered game');
     };
 
 //    this.exit = function() {

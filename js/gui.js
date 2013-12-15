@@ -23,6 +23,7 @@ yogo.GUI = function() {
     };
 
     this.addInterest = function() {
+        console.log("adding interest :" + Math.floor(score * coreHp / 1000000));
         this.addToScore(Math.floor(score * coreHp / 1000000));
     };
 

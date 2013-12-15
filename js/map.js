@@ -25,7 +25,6 @@ yogo.Map = function(g) {
         }
 
         enemies = e;
-        console.log('loading map');
         // Load the tile data
         width = yogo.cache.maps[yogo.mapList[n].name].width;
         height = yogo.cache.maps[yogo.mapList[n].name].height;
@@ -83,16 +82,15 @@ yogo.Map = function(g) {
             dist = 0,
             cX,
             cY,
-            i;
+            i, j,
+            coreSize = 3;
 
-        pathValues[coreY][coreX] = dist;
-        nodeQueue.push([coreX, coreY]);
-        pathValues[coreY+1][coreX] = dist;
-        nodeQueue.push([coreX, coreY+1]);
-        pathValues[coreY][coreX+1] = dist;
-        nodeQueue.push([coreX+1, coreY]);
-        pathValues[coreY+1][coreX+1] = dist;
-        nodeQueue.push([coreX+1, coreY+1]);
+        for (i = 0; i < coreSize; i++) {
+            for (j = 0; j < coreSize; j++) {
+                pathValues[coreY + j][coreX + i] = dist;
+                nodeQueue.push([coreX + i, coreY + j]);
+            }
+        }
 
         while (nodeQueue.length > 0) {
             cX = nodeQueue[0][0];
@@ -136,7 +134,7 @@ yogo.Map = function(g) {
     };
 
     this.isCore = function(x, y) {
-        return (x >= coreX && x <= coreX + 1 && y >= coreY && y <= coreY + 1);
+        return (x >= coreX && x <= coreX + 2 && y >= coreY && y <= coreY + 2);
     };
 
     this.damageCore = function(d) {
@@ -195,12 +193,12 @@ yogo.Map = function(g) {
             yogo.cache.sprites['core'],
             0,
             0,
-            40,
-            40,
+            60,
+            60,
             coreX * 20,
             coreY * 20,
-            40,
-            40
+            60,
+            60
         );
         // Core health
 //        yogo.ctx.fillStyle = 'green';
