@@ -12,7 +12,7 @@ yogo.Tower = function(x0, y0, towerName, enemies, gui) {
     this.halfHeight = this.height / 2;
 
     // Damage dealt over 1000 ms
-    this.dmg = 500;
+    this.dmg = 250;
 
 //    this.rate = 2;
     this.active = false;

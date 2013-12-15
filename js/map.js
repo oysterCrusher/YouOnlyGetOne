@@ -3,6 +3,11 @@ yogo.Map = function(g) {
     var gui = g,
         tiles = [],
         spawns,
+        nSpawns = 0,
+        nWave = 0,
+        spawnInterval = 2200,
+        spawnTimer = 0,
+        waveTime = 15000,
         enemies,
         pathValues = [],
         width = 0,
@@ -11,7 +16,7 @@ yogo.Map = function(g) {
         tileHeight = 0,
         coreX = 0,
         coreY = 0,
-        coreHp = 1000,
+        coreHp = 10000,
         timer = 0;
 
     this.loadMap = function(e, n) {
@@ -40,11 +45,9 @@ yogo.Map = function(g) {
 
         coreX = yogo.mapList[n].coreX;
         coreY =  yogo.mapList[n].coreY;
-        spawns = yogo.mapList[n].spawns;
 
-        for (var i = 0; i < spawns.length; i++) {
-            spawns[i].nextSpawn = 0;
-        }
+        spawns = yogo.mapList[n].spawns;
+        nSpawns = yogo.mapList[n].spawns.length;
 
         this.updatePath();
         gui.updateCoreHp(coreHp);
@@ -143,16 +146,21 @@ yogo.Map = function(g) {
 
     this.update = function(dt) {
         timer += dt;
+        spawnTimer += dt;
 
         // Go through each spawn point and see if anything is due to spawn
-        for (var i = 0; i < spawns.length; i++) {
-            if (spawns[i].nextSpawn >= spawns[i].queue.length) {
-                continue;
-            }
-            if (spawns[i].queue[spawns[i].nextSpawn].time * 1000 <= timer) {
-                enemies.spawn(spawns[i].x, spawns[i].y, spawns[i].queue[spawns[i].nextSpawn].name);
-                spawns[i].nextSpawn++;
-            }
+        if (timer >= waveTime) {
+            timer -= waveTime;
+            spawnTimer = timer;
+            nWave++;
+            spawnInterval = Math.floor(spawnInterval * 0.95);
+        }
+
+        if (spawnTimer > spawnInterval && timer < 7500) {
+            spawnTimer -= spawnInterval;
+            // Spawn an enemy at a random spawn point
+            var i = Math.floor(Math.random() * nSpawns);
+            enemies.spawn(spawns[i].x, spawns[i].y, 'enemy1');
         }
     };
 

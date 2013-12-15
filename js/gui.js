@@ -67,7 +67,7 @@ yogo.GUI = function() {
             yogo.ctx.fillStyle = '#881010';
             yogo.ctx.fillRect(150, 15, 100, 10);
             yogo.ctx.fillStyle = '#108810';
-            yogo.ctx.fillRect(150, 15, 100 * coreHp / 1000, 10);
+            yogo.ctx.fillRect(150, 15, 100 * coreHp / 10000, 10);
             coreHpDirty = false;
         }
 
@@ -84,7 +84,6 @@ yogo.GUI = function() {
         }
 
         if (towerDirty) {
-            console.log(activeTower);
             yogo.ctx.font = '10pt "Open Sans" Sans-Serif';
             yogo.ctx.textBaseline = 'middle';
             yogo.ctx.textAlign = 'center';
