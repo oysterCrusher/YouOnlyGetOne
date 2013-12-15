@@ -11,11 +11,20 @@ yogo.Game = function() {
         PLAY_PHASE = 1,
         FINISHED_PHASE = 2;
 
+    var isPlacingTower = false,
+        towerBuildTime = 1500,
+        towerBeingPlaced = { x: 0, y: 0, timer: 0, canvas: null, ctx: null };
+
     this.init = function() {
         map.loadMap(enemies, 0);
+        towerBeingPlaced.canvas = document.createElement('canvas');
+        towerBeingPlaced.width = 39;
+        towerBeingPlaced.height = 39;
+        towerBeingPlaced.ctx = towerBeingPlaced.canvas.getContext('2d');
     };
 
     this.enter = function() {
+        isPlacingTower = false;
     };
 
 //    this.exit = function() {
@@ -34,12 +43,16 @@ yogo.Game = function() {
             if (phase === SETUP_PHASE) {
                 phase = PLAY_PHASE;
             }
-            towers.spawn(tX, tY, 'tower1');
+            isPlacingTower = true;
+            towers.disableAll();
+            towerBeingPlaced.x = tX;
+            towerBeingPlaced.y = tY;
+            towerBeingPlaced.timer = 0;
         }
     };
 
     this.onUp = function() {
-//        console.log('game onUp');
+        isPlacingTower = false;
     };
 
     this.onMove = function(c) {
@@ -54,6 +67,24 @@ yogo.Game = function() {
 
     this.update = function(dt) {
         if (phase === PLAY_PHASE) {
+            // Is the player currently building a tower?
+            if (isPlacingTower) {
+                towerBeingPlaced.timer += dt;
+                if (towerBeingPlaced.timer >= towerBuildTime) {
+                    isPlacingTower = false;
+                    towers.spawn(towerBeingPlaced.x, towerBeingPlaced.y, 'tower1');
+                }
+                // Update the tower placement countdown graphic
+                towerBeingPlaced.ctx.clearRect(0, 0, towerBeingPlaced.width, towerBeingPlaced.height);
+                towerBeingPlaced.ctx.fillStyle = 'rgba(150,150,0,0.4)';
+                towerBeingPlaced.ctx.beginPath();
+                towerBeingPlaced.ctx.moveTo(20, 20);
+                towerBeingPlaced.ctx.arc(20, 20, 35, -Math.PI / 2, Math.PI * (2 - 2 * towerBeingPlaced.timer / towerBuildTime - 0.5), false);
+                towerBeingPlaced.ctx.closePath();
+                towerBeingPlaced.ctx.fill();
+            }
+
+
             map.update(dt);
             enemies.update(dt);
             towers.update(dt);
@@ -78,6 +109,21 @@ yogo.Game = function() {
         yogo.ctx.fillRect(0, 40, 33 * 20, yogo.canvas.height - 40);
 
         map.render();
+
+        if (isPlacingTower) {
+            yogo.ctx.drawImage(
+                towerBeingPlaced.canvas,
+                0,
+                0,
+                towerBeingPlaced.width,
+                towerBeingPlaced.height,
+                towerBeingPlaced.x * 20,
+                towerBeingPlaced.y * 20,
+                towerBeingPlaced.width,
+                towerBeingPlaced.height
+            );
+        }
+
         towers.render();
         enemies.render();
 

@@ -1,7 +1,6 @@
 yogo.Towers = function(map, enemies, gui) {
 
-    var pool = [],
-        currentActive = -1;
+    var pool = [];
 
     this.map = map;
 
@@ -19,10 +18,7 @@ yogo.Towers = function(map, enemies, gui) {
         this.map.setTileValue(x0, y0+1, 3);
         this.map.setTileValue(x0+1, y0+1, 3);
         this.map.updatePath();
-        if (currentActive === -1) {
-            currentActive = 0;
-            this.setActive(x0, y0);
-        }
+        this.setActive(x0, y0);
     };
 
     this.setActive = function(x, y) {
@@ -30,14 +26,19 @@ yogo.Towers = function(map, enemies, gui) {
         for (var i = 0; i < pool.length; i++) {
             if (pool[i].isReady()) {
                 if (pool[i].isAt(x, y)) {
-                    pool[currentActive].setActive(false);
+                    this.disableAll();
                     pool[i].setActive(true);
-                    currentActive = i;
                     return true;
                 }
             }
         }
         return false;
+    };
+
+    this.disableAll = function() {
+        for (var i = 0; i < pool.length; i++) {
+            pool[i].setActive(false);
+        }
     };
 
     this.update = function(dt) {
