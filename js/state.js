@@ -48,6 +48,10 @@ yogo.State = function() {
         currentState = states[newState];
     };
 
+    this.loadLevel = function(nLevel) {
+        states.game.loadMap(nLevel);
+    };
+
     // Set up all the mouse (and maybe touch inputs
     this.bindDown = function() {
         yogo.canvas.addEventListener('mousedown', mousedownHandler, false);
