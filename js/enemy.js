@@ -1,4 +1,12 @@
 yogo.Enemy = function(x0, y0, spriteName, speed, map, gui) {
+
+    this.directions = {
+        right: 0,
+        down: 1,
+        left: 2,
+        up: 3
+        };
+
     // Position in tile coordinates
     this.x = x0;
     this.y = y0;
@@ -16,8 +24,9 @@ yogo.Enemy = function(x0, y0, spriteName, speed, map, gui) {
 
     this.spriteName = spriteName;
     // Size
-    this.width = yogo.cache.sprites[spriteName].width;
-    this.height = yogo.cache.sprites[spriteName].height;
+    this.width = 12;
+    this.height = 12;
+    this.direction = this.directions.right;
     this.halfWidth = this.width / 2;
     this.halfHeight = this.height / 2;
     // Percentage progress made in one second (100 = 1 tile per second)
@@ -50,21 +59,25 @@ yogo.Enemy.prototype.findNextTile = function() {
     if (this.map.getPathValues(this.x, this.y - 1) < this.map.getPathValues(this.x, this.y)) {
         this.nextX = this.x;
         this.nextY = this.y - 1;
+        this.direction = this.directions.up;
     } else
     // Look down
     if (this.map.getPathValues(this.x, this.y + 1) < this.map.getPathValues(this.x, this.y)) {
         this.nextX = this.x;
         this.nextY = this.y + 1;
+        this.direction = this.directions.down;
     } else
     // Look left
     if (this.map.getPathValues(this.x - 1, this.y) < this.map.getPathValues(this.x, this.y)) {
         this.nextX = this.x - 1;
         this.nextY = this.y;
+        this.direction = this.directions.left;
     } else
     // Look right
     if (this.map.getPathValues(this.x + 1, this.y) < this.map.getPathValues(this.x, this.y)) {
         this.nextX = this.x + 1;
         this.nextY = this.y;
+        this.direction = this.directions.right;
     }
 };
 
@@ -90,7 +103,7 @@ yogo.Enemy.prototype.render = function() {
     if (this.alive) {
         yogo.ctx.drawImage(
             yogo.cache.sprites[this.spriteName],
-            0,
+            this.direction * 12,
             0,
             this.width,
             this.height,
