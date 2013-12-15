@@ -12,7 +12,7 @@ yogo.spriteList = [
 
 yogo.mapList = [
     {
-        name: '01',
+        name: '1',
         url: 'assets/m01.json',
         coreX: 28,
         coreY: 14,
@@ -24,7 +24,7 @@ yogo.mapList = [
         ]
     },
     {
-        name: '02',
+        name: '2',
         url: 'assets/m02.json',
         coreX: 20,
         coreY: 15,

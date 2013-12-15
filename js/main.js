@@ -44,6 +44,9 @@ window.onload = function() {
 
 //    window.addEventListener('resize', checkResize, false);
 
+    // Check to see if localstorage is available
+    yogo.hasLocalStorage = typeof(localStorage) !== "undefined";
+
     // Grab the loading image
     yogo.cache.sprites['loading'] = new Image();
     yogo.cache.sprites['loading'].onload = function() {

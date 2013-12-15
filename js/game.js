@@ -62,7 +62,12 @@ yogo.Game = function() {
             // Is the game over?
             if (map.getCoreHp() === 0) {
                 phase = FINISHED_PHASE;
-                console.log(gui.getScore());
+                if (yogo.hasLocalStorage) {
+                    var prevBest = localStorage.getItem('yogo_L' + map.getMapName() + '_score');
+                    if (gui.getScore() > prevBest) {
+                        localStorage.setItem('yogo_L' + map.getMapName() + '_score', gui.getScore().toString());
+                    }
+                }
             }
 
         }

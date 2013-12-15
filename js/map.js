@@ -3,6 +3,7 @@ yogo.Map = function(g) {
     var gui = g,
         tiles = [],
         spawns,
+        name,
         nSpawns = 0,
         nWave = 0,
         spawnInterval = 2200,
@@ -48,8 +49,14 @@ yogo.Map = function(g) {
         spawns = yogo.mapList[n].spawns;
         nSpawns = yogo.mapList[n].spawns.length;
 
+        name = yogo.mapList[n].name;
+
         this.updatePath();
         gui.updateCoreHp(coreHp);
+    };
+
+    this.getMapName = function() {
+        return name;
     };
 
     this.resetPathValues = function() {
