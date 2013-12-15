@@ -1,9 +1,10 @@
-yogo.Tower = function(x0, y0, towerName, enemies) {
+yogo.Tower = function(x0, y0, towerName, enemies, gui) {
     // Position in tile coordinates
     this.x = x0;
     this.y = y0;
     this.spriteName = towerName;
     this.enemyList = enemies.getPool();
+    this.gui = gui;
     // Size
     this.width = 40;
     this.height = 40;
@@ -17,7 +18,7 @@ yogo.Tower = function(x0, y0, towerName, enemies) {
     this.active = false;
     this.target = null;
     this.angleToTarget = 0;
-    this.range = 3.2;
+    this.range = 2.8;
     this.isShooting = false;
 
     this.buildTime = 2000;
@@ -34,6 +35,7 @@ yogo.Tower = function(x0, y0, towerName, enemies) {
 
 yogo.Tower.prototype.setActive = function(b) {
     this.active = b;
+    this.gui.setTower(this);
     return this.active;
 };
 

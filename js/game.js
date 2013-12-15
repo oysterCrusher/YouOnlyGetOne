@@ -3,7 +3,7 @@ yogo.Game = function() {
     var gui = new yogo.GUI(),
         map = new yogo.Map(gui),
         enemies = new yogo.Enemies(map, gui),
-        towers = new yogo.Towers(map, enemies),
+        towers = new yogo.Towers(map, enemies, gui),
         selectionHighlightPosition = [50,50],
         secondsCounter = 0;
 
@@ -50,16 +50,12 @@ yogo.Game = function() {
         map.update(dt);
         enemies.update(dt);
         towers.update(dt);
-        secondsCounter += dt;
-        if (secondsCounter >= 1000) {
-            gui.addInterest();
-            secondsCounter -= 1000;
-        }
+        gui.update(dt);
     };
 
     this.render = function() {
         yogo.ctx.fillStyle = '#303030';
-        yogo.ctx.fillRect(0, 0, 33 * 20, yogo.canvas.height);
+        yogo.ctx.fillRect(0, 40, 33 * 20, yogo.canvas.height - 40);
 
         map.render();
         towers.render();
@@ -67,7 +63,7 @@ yogo.Game = function() {
 
         // Render highlight box around mouse position
         if (selectionHighlightPosition[0] >= 0 && selectionHighlightPosition[0] < 32) {
-            if (selectionHighlightPosition[1] >= 0 && selectionHighlightPosition[1] < 29) {
+            if (selectionHighlightPosition[1] >= 2 && selectionHighlightPosition[1] < 29) {
                 yogo.ctx.drawImage(
                     yogo.cache.sprites['cursor'],
                     0,

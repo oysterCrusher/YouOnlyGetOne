@@ -1,4 +1,4 @@
-yogo.Towers = function(map, enemies) {
+yogo.Towers = function(map, enemies, gui) {
 
     var pool = [],
         currentActive = -1;
@@ -13,7 +13,7 @@ yogo.Towers = function(map, enemies) {
     };
 
     this.spawn = function(x0, y0, name) {
-        pool.push(new yogo.Tower(x0, y0, name, enemies));
+        pool.push(new yogo.Tower(x0, y0, name, enemies, gui));
         this.map.setTileValue(x0, y0, 3);
         this.map.setTileValue(x0+1, y0, 3);
         this.map.setTileValue(x0, y0+1, 3);

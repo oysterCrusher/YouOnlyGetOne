@@ -36,7 +36,7 @@ yogo.State = function() {
         currentState.update(dt);
         currentState.render();
         yogo.ctx.fillStyle = 'white';
-        yogo.ctx.fillText(parseInt(1000 / dt, 10).toString(), 4, 10);
+        yogo.ctx.fillText(parseInt(1000 / dt, 10).toString(), 10, 590);
     };
 
     // Set up all the mouse (and maybe touch inputs
