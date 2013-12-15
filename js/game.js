@@ -1,10 +1,10 @@
 yogo.Game = function() {
 
-    var map = new yogo.Map(),
-        enemies = new yogo.Enemies(map),
+    var gui = new yogo.GUI(),
+        map = new yogo.Map(gui),
+        enemies = new yogo.Enemies(map, gui),
         towers = new yogo.Towers(map, enemies),
-        selectionHighlightPosition = [50,50],
-        money = 1000;
+        selectionHighlightPosition = [50,50];
 
     this.init = function() {
         map.loadMap(enemies, 0);
@@ -42,7 +42,7 @@ yogo.Game = function() {
     };
 
     this.loadMap = function(n) {
-        map.loadMap(n);
+        map.loadMap(enemies, n);
     };
 
     this.update = function(dt) {
@@ -53,14 +53,14 @@ yogo.Game = function() {
 
     this.render = function() {
         yogo.ctx.fillStyle = '#303030';
-        yogo.ctx.fillRect(0, 0, yogo.canvas.width, yogo.canvas.height);
+        yogo.ctx.fillRect(0, 0, 33 * 20, yogo.canvas.height);
 
         map.render();
         towers.render();
         enemies.render();
 
         // Render highlight box around mouse position
-        if (selectionHighlightPosition[0] >= 0 && selectionHighlightPosition[0] < 34) {
+        if (selectionHighlightPosition[0] >= 0 && selectionHighlightPosition[0] < 32) {
             if (selectionHighlightPosition[1] >= 0 && selectionHighlightPosition[1] < 29) {
                 yogo.ctx.drawImage(
                     yogo.cache.sprites['cursor'],
@@ -75,6 +75,9 @@ yogo.Game = function() {
                 );
             }
         }
+
+        // Render the GUI elements
+        gui.render();
 
     };
 

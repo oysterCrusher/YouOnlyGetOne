@@ -1,6 +1,7 @@
-yogo.Map = function() {
+yogo.Map = function(g) {
 
-    var tiles = [],
+    var gui = g,
+        tiles = [],
         spawns,
         enemies,
         pathValues = [],
@@ -46,6 +47,7 @@ yogo.Map = function() {
         }
 
         this.updatePath();
+        gui.updateCoreHp(coreHp);
     };
 
     this.resetPathValues = function() {
@@ -136,6 +138,7 @@ yogo.Map = function() {
 
     this.damageCore = function(d) {
         coreHp -= d;
+        gui.updateCoreHp(coreHp);
     };
 
     this.update = function(dt) {

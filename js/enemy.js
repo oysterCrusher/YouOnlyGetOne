@@ -1,4 +1,4 @@
-yogo.Enemy = function(x0, y0, spriteName, speed, map) {
+yogo.Enemy = function(x0, y0, spriteName, speed, map, gui) {
     // Position in tile coordinates
     this.x = x0;
     this.y = y0;
@@ -10,6 +10,7 @@ yogo.Enemy = function(x0, y0, spriteName, speed, map) {
     this.dX = 0;
     this.dY = 0;
     this.map = map;
+    this.gui = gui;
     this.hp = 1000;
     this.alive = true;
 
@@ -24,23 +25,24 @@ yogo.Enemy = function(x0, y0, spriteName, speed, map) {
 };
 
 yogo.Enemy.prototype.update = function(dt) {
-    this.progress += (dt * this.speed) / 1000;
+    if (this.alive) {
+        this.progress += (dt * this.speed) / 1000;
 
-    if (this.progress > 100) {
-        this.x = this.nextX;
-        this.y = this.nextY;
-        this.findNextTile();
-        this.progress -= 100;
-        // Have we reached the core?
-        if (this.map.isCore(this.x, this.y)) {
-            this.map.damageCore(this.hp);
-            this.takeDamage(this.hp);
+        if (this.progress > 100) {
+            this.x = this.nextX;
+            this.y = this.nextY;
+            this.findNextTile();
+            this.progress -= 100;
+            // Have we reached the core?
+            if (this.map.isCore(this.x, this.y)) {
+                this.map.damageCore(this.hp);
+                this.alive = false;
+            }
         }
+
+        this.dX = Math.round((this.x + (this.nextX - this.x) * (this.progress / 100)) * 20 + 10 - this.halfWidth);
+        this.dY = Math.round((this.y + (this.nextY - this.y) * (this.progress / 100)) * 20 + 10 - this.halfHeight);
     }
-
-    this.dX = Math.round((this.x + (this.nextX - this.x) * (this.progress / 100)) * 20 + 10 - this.halfWidth);
-    this.dY = Math.round((this.y + (this.nextY - this.y) * (this.progress / 100)) * 20 + 10 - this.halfHeight);
-
 };
 
 yogo.Enemy.prototype.findNextTile = function() {
@@ -79,6 +81,7 @@ yogo.Enemy.prototype.getPosition = function() {
 yogo.Enemy.prototype.takeDamage = function(d) {
     this.hp -= d;
     if (this.hp <= 0) {
+        this.gui.addToScore(100);
         this.alive = false;
     }
 };
