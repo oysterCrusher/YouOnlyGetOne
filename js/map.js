@@ -141,7 +141,12 @@ yogo.Map = function(g) {
 
     this.damageCore = function(d) {
         coreHp -= d;
+        coreHp = Math.max(coreHp, 0);
         gui.updateCoreHp(coreHp);
+    };
+
+    this.getCoreHp = function() {
+        return coreHp;
     };
 
     this.update = function(dt) {

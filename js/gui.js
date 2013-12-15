@@ -23,7 +23,11 @@ yogo.GUI = function() {
     };
 
     this.addInterest = function() {
-        this.addToScore(Math.floor(score * coreHp / 100000));
+        this.addToScore(Math.floor(score * coreHp / 1000000));
+    };
+
+    this.getScore = function() {
+        return score;
     };
 
     this.setTower = function(tower) {
@@ -34,9 +38,9 @@ yogo.GUI = function() {
     this.update = function(dt) {
         timer += dt;
         // Add interest every second
-        if (timer >= 1000) {
+        if (timer >= 2500) {
             this.addInterest();
-            timer -= 1000;
+            timer -= 2500;
         }
     };
 

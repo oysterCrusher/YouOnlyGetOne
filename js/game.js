@@ -4,7 +4,12 @@ yogo.Game = function() {
         map = new yogo.Map(gui),
         enemies = new yogo.Enemies(map, gui),
         towers = new yogo.Towers(map, enemies, gui),
-        selectionHighlightPosition = [50,50];
+        selectionHighlightPosition = [50,50],
+        phase = 0;
+
+    var SETUP_PHASE = 0,
+        PLAY_PHASE = 1,
+        FINISHED_PHASE = 2;
 
     this.init = function() {
         map.loadMap(enemies, 0);
@@ -27,6 +32,9 @@ yogo.Game = function() {
         if (towers.setActive(tX, tY)) {
 
         } else if (towers.checkSpawn(tX, tY)) {
+            if (phase === SETUP_PHASE) {
+                phase = PLAY_PHASE;
+            }
             towers.spawn(tX, tY, 'tower1');
         }
     };
@@ -38,7 +46,7 @@ yogo.Game = function() {
     this.onMove = function(c) {
         var tX = Math.floor(c[0] / 20),
             tY = Math.floor(c[1] / 20);
-            selectionHighlightPosition = [tX, tY];
+        selectionHighlightPosition = [tX, tY];
     };
 
     this.loadMap = function(n) {
@@ -46,10 +54,19 @@ yogo.Game = function() {
     };
 
     this.update = function(dt) {
-        map.update(dt);
-        enemies.update(dt);
-        towers.update(dt);
-        gui.update(dt);
+        if (phase === PLAY_PHASE) {
+            map.update(dt);
+            enemies.update(dt);
+            towers.update(dt);
+            gui.update(dt);
+
+            // Is the game over?
+            if (map.getCoreHp() === 0) {
+                phase = FINISHED_PHASE;
+                console.log(gui.getScore());
+            }
+
+        }
     };
 
     this.render = function() {
