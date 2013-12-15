@@ -36,7 +36,7 @@ yogo.State = function() {
         currentState.update(dt);
         currentState.render();
         yogo.ctx.fillStyle = 'white';
-        yogo.ctx.fillText(parseInt(dt, 10).toString(), 4, 10);
+        yogo.ctx.fillText(parseInt(1000 / dt, 10).toString(), 4, 10);
     };
 
     // Set up all the mouse (and maybe touch inputs
@@ -80,7 +80,10 @@ yogo.State = function() {
     }
 
     function getMouseCoords(evt) {
-        return [evt.pageX - evt.target.getBoundingClientRect().left, evt.pageY - evt.target.getBoundingClientRect().top];
+        return [
+            (evt.pageX - evt.target.getBoundingClientRect().left) / yogo.scale,
+            (evt.pageY - evt.target.getBoundingClientRect().top) / yogo.scale
+        ];
     }
 
 };

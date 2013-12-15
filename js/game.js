@@ -4,7 +4,8 @@ yogo.Game = function() {
         map = new yogo.Map(gui),
         enemies = new yogo.Enemies(map, gui),
         towers = new yogo.Towers(map, enemies),
-        selectionHighlightPosition = [50,50];
+        selectionHighlightPosition = [50,50],
+        secondsCounter = 0;
 
     this.init = function() {
         map.loadMap(enemies, 0);
@@ -49,6 +50,11 @@ yogo.Game = function() {
         map.update(dt);
         enemies.update(dt);
         towers.update(dt);
+        secondsCounter += dt;
+        if (secondsCounter >= 1000) {
+            gui.addInterest();
+            secondsCounter -= 1000;
+        }
     };
 
     this.render = function() {

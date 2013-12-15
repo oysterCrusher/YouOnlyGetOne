@@ -17,6 +17,33 @@ window.onload = function() {
     yogo.ctx.fillStyle = '#303030';
     yogo.ctx.fillRect(0, 0, yogo.canvas.width, yogo.canvas.height);
 
+    yogo.scale = 1;
+
+    function checkResize() {
+        var windowWidth = window.innerWidth,
+            windowHeight = window.innerHeight,
+            scaleWidth = windowWidth / 800,
+            scaleHeight = windowHeight / 600;
+
+        yogo.canvas.style.webkitTransformOrigin = '50% 0';
+        yogo.canvas.style.transformOrigin = '50% 0';
+        yogo.canvas.style.oTransotransformOrigin = '50% 0';
+
+        if (scaleWidth < scaleHeight) {
+            yogo.canvas.style.transform = 'scale(' + scaleWidth + ')';
+            yogo.canvas.style.oTransform = 'scale(' + scaleWidth + ')';
+            yogo.canvas.style.webkitTransform = 'scale(' + scaleWidth + ')';
+            yogo.scale = scaleWidth;
+        } else {
+            yogo.canvas.style.transform = 'scale(' + scaleHeight + ')';
+            yogo.canvas.style.oTransform = 'scale(' + scaleHeight + ')';
+            yogo.canvas.style.webkitTransform = 'scale(' + scaleHeight+ ')';
+            yogo.scale = scaleHeight;
+        }
+    }
+
+    window.addEventListener('resize', checkResize, false);
+
     // Grab the loading image
     yogo.cache.sprites['loading'] = new Image();
     yogo.cache.sprites['loading'].onload = function() {

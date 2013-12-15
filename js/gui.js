@@ -15,6 +15,10 @@ yogo.GUI = function() {
         scoreDirty = true;
     };
 
+    this.addInterest = function() {
+        this.addToScore(Math.floor(score * coreHp / 100000));
+    };
+
     this.render = function() {
         yogo.ctx.fillStyle = '#808080';
         yogo.ctx.fillRect(33 * 20, 0, 2, yogo.canvas.height);

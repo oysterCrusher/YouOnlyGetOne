@@ -190,8 +190,8 @@ yogo.Map = function(g) {
             40
         );
         // Core health
-        yogo.ctx.fillStyle = 'green';
-        yogo.ctx.fillRect(coreX * 20, coreY * 20 + 15, Math.max(40 * coreHp / 1000, 0), 9);
+//        yogo.ctx.fillStyle = 'green';
+//        yogo.ctx.fillRect(coreX * 20, coreY * 20 + 15, Math.max(40 * coreHp / 1000, 0), 9);
     }
 
 };

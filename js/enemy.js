@@ -81,7 +81,7 @@ yogo.Enemy.prototype.getPosition = function() {
 yogo.Enemy.prototype.takeDamage = function(d) {
     this.hp -= d;
     if (this.hp <= 0) {
-        this.gui.addToScore(100);
+        this.gui.addToScore(50);
         this.alive = false;
     }
 };
