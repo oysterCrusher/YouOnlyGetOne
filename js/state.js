@@ -19,7 +19,7 @@ yogo.State = function() {
         states.game.init();
 
         // Start the first state
-        currentState = states.title;
+        currentState = states.levels;
         currentState.enter();
 
         // Bind the mouse

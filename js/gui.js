@@ -104,7 +104,7 @@ yogo.GUI = function() {
 //            yogo.ctx.fillStyle = 'blue';
             yogo.ctx.fillRect(260, 0, 260, 38);
             yogo.ctx.fillStyle = '#AAAAAA';
-            yogo.ctx.fillText('Score : ' + score, 300, 19);
+            yogo.ctx.fillText('Score : ' + score, 400, 19);
             scoreDirty = false;
         }
 

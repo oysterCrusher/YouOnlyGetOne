@@ -1,6 +1,7 @@
 yogo.LevelSelect = function() {
 
-    var redrawAll = true,
+    var titleString = 'Power Core Defense',
+        redrawAll = true,
         button1Hover = false,
         button1Dirty = true,
         button2Hover = false,
@@ -36,10 +37,10 @@ yogo.LevelSelect = function() {
             yogo.state.changeState('game');
         }
 
-        // Back button
-        if (c[1] >= 520 && c[1] < 565 && c[0] < 200) {
-            yogo.state.changeState('title');
-        }
+//        // Back button
+//        if (c[1] >= 520 && c[1] < 565 && c[0] < 200) {
+//            yogo.state.changeState('title');
+//        }
     };
 
     this.onMove = function(c) {
@@ -69,18 +70,18 @@ yogo.LevelSelect = function() {
             button2Hover = false;
         }
 
-        // Is the mouse over the back button
-        if (c[1] >= 520 && c[1] < 565 && c[0] < 200) {
-            if (!backButtonHover) {
-                backButtonDirty = true;
-            }
-            backButtonHover = true;
-        } else {
-            if (backButtonHover) {
-                backButtonDirty = true;
-            }
-            backButtonHover = false;
-        }
+//        // Is the mouse over the back button
+//        if (c[1] >= 520 && c[1] < 565 && c[0] < 200) {
+//            if (!backButtonHover) {
+//                backButtonDirty = true;
+//            }
+//            backButtonHover = true;
+//        } else {
+//            if (backButtonHover) {
+//                backButtonDirty = true;
+//            }
+//            backButtonHover = false;
+//        }
     };
 
     this.onUp = function() {
@@ -97,6 +98,13 @@ yogo.LevelSelect = function() {
             // Background
             yogo.ctx.fillStyle = '#303030';
             yogo.ctx.fillRect(0, 0, yogo.canvas.width, yogo.canvas.height);
+
+            // Title
+            yogo.ctx.font = '25pt "Open Sans" Sans-Serif';
+            yogo.ctx.textBaseline = 'middle';
+            yogo.ctx.textAlign = 'left';
+            yogo.ctx.fillStyle = '#BBBBBB';
+            yogo.ctx.fillText(titleString, 40, 50);
         }
 
         if (button1Dirty || redrawAll) {
@@ -147,22 +155,22 @@ yogo.LevelSelect = function() {
             button2Dirty = false;
         }
 
-        if (backButtonDirty || redrawAll) {
-            if (backButtonHover) {
-                yogo.ctx.fillStyle = '#BBBBBB';
-                yogo.canvas.style.cursor = "pointer";
-            } else {
-                yogo.ctx.fillStyle = '#0071C1';
-                yogo.canvas.style.cursor = "default";
-            }
-            yogo.ctx.fillRect(0, 520, 200, 45);
-            yogo.ctx.font = '21pt "Open Sans" Sans-Serif';
-            yogo.ctx.textBaseline = 'middle';
-            yogo.ctx.textAlign = 'right';
-            yogo.ctx.fillStyle = '#303030';
-            yogo.ctx.fillText('<  Back', 180, 540);
-            backButtonDirty = false;
-        }
+//        if (backButtonDirty || redrawAll) {
+//            if (backButtonHover) {
+//                yogo.ctx.fillStyle = '#BBBBBB';
+//                yogo.canvas.style.cursor = "pointer";
+//            } else {
+//                yogo.ctx.fillStyle = '#0071C1';
+//                yogo.canvas.style.cursor = "default";
+//            }
+//            yogo.ctx.fillRect(0, 520, 200, 45);
+//            yogo.ctx.font = '21pt "Open Sans" Sans-Serif';
+//            yogo.ctx.textBaseline = 'middle';
+//            yogo.ctx.textAlign = 'right';
+//            yogo.ctx.fillStyle = '#303030';
+//            yogo.ctx.fillText('<  Back', 180, 540);
+//            backButtonDirty = false;
+//        }
 
         redrawAll = false;
 
