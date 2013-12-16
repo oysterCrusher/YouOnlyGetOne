@@ -35,6 +35,26 @@ yogo.GUI = function() {
         towerDirty = true;
     };
 
+    this.updateTower = function() {
+        towerDirty = true;
+    };
+
+    this.onClick = function(c) {
+        // Check to see if they clicked an upgrade button
+        if (activeTower !== null) {
+            if (activeTower.canUpgradeDmg()) {
+                if (c[0] > 672 && c[0] < 672 + 118 && c[1] > 385 && c[1] < 385 + 60) {
+                    activeTower.upgradeDmg();
+                }
+            }
+            if (activeTower.canUpgradeRange()) {
+                if (c[0] > 672 && c[0] < 672 + 118 && c[1] > 480 && c[1] < 480 + 60) {
+                    activeTower.upgradeRange();
+                }
+            }
+        }
+    };
+
     this.update = function(dt) {
         timer += dt;
         // Add interest every second
@@ -96,9 +116,28 @@ yogo.GUI = function() {
             if (activeTower !== null) {
                 yogo.ctx.fillStyle = '#AAAAAA';
                 // DPS
-                yogo.ctx.fillText('DPS  :  ' + activeTower.dmg.toString(), 728, 370);
+                yogo.ctx.fillText('Damage  :  ' + activeTower.dmg.toString(), 728, 370);
                 // Range
-                yogo.ctx.fillText('Range  :  ' + activeTower.range.toString(), 728, 440);
+                yogo.ctx.fillText('Range  :  ' + activeTower.range.toString(), 728, 465);
+
+                if (activeTower.canUpgradeDmg()) {
+                    yogo.ctx.fillStyle = '#555555';
+                    yogo.ctx.fillRect(672, 385, 118, 60);
+                    yogo.ctx.fillStyle = '#AAAAAA';
+                    yogo.ctx.fillText('upgrade', 732, 397);
+                    yogo.ctx.fillText('next : ' + activeTower.getNextDmgLevel(), 732, 415);
+                    yogo.ctx.fillText('time : ' + activeTower.getNextDmgUpgradeTime().toFixed(1) + ' s', 732, 433);
+                }
+
+                if (activeTower.canUpgradeRange()) {
+                    yogo.ctx.fillStyle = '#555555';
+                    yogo.ctx.fillRect(672, 480, 118, 60);
+                    yogo.ctx.fillStyle = '#AAAAAA';
+                    yogo.ctx.fillText('upgrade', 732, 397 + 95);
+                    yogo.ctx.fillText('next : ' + activeTower.getNextRangeLevel().toFixed(1), 732, 415 + 95);
+                    yogo.ctx.fillText('time : ' + activeTower.getNextRangeUpgradeTime().toFixed(1) + ' s', 732, 433 + 95);
+                }
+
             } else {
                 yogo.ctx.fillStyle = '#555555';
                 yogo.ctx.fillText('None selected', 731, 450);

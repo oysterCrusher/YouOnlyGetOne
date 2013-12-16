@@ -11,14 +11,23 @@ yogo.Tower = function(x0, y0, towerName, enemies, gui) {
     this.halfWidth = this.width / 2;
     this.halfHeight = this.height / 2;
 
-    // Damage dealt over 1000 ms
-    this.dmg = 250;
+    // Upgrade timings
+    this.upgradeTimings = [0, 1.5, 1.7, 1.8, 1.9];
 
-//    this.rate = 2;
+    // Damage dealt over 1000 ms
+    this.dmgLevel = 0;
+    this.dmgLevels = [250, 275, 300, 325, 350];
+    this.dmg = this.dmgLevels[this.dmgLevel];
+
+    // Firing range
+    this.rangeLevel = 0;
+    this.rangeLevels = [2.8, 3.0, 3.2, 3.4, 3.6];
+    this.range = this.rangeLevels[this.rangeLevel];
+
     this.active = false;
     this.target = null;
     this.angleToTarget = 0;
-    this.range = 2.8;
+
     this.isShooting = false;
 
     this.buildTime = 2000;
@@ -35,7 +44,6 @@ yogo.Tower = function(x0, y0, towerName, enemies, gui) {
 
 yogo.Tower.prototype.setActive = function(b) {
     this.active = b;
-    this.gui.setTower(this);
     return this.active;
 };
 
@@ -45,6 +53,42 @@ yogo.Tower.prototype.isReady = function() {
 
 yogo.Tower.prototype.isAt = function(x, y) {
     return (x >= this.x && x <= this.x + 1 && y >= this.y && y <= this.y + 1);
+};
+
+yogo.Tower.prototype.canUpgradeRange = function() {
+    return this.rangeLevel < this.rangeLevels.length - 1;
+};
+
+yogo.Tower.prototype.canUpgradeDmg = function() {
+    return this.dmgLevel < this.dmgLevels.length - 1;
+};
+
+yogo.Tower.prototype.getNextRangeLevel = function() {
+    return this.rangeLevels[this.rangeLevel+1];
+};
+
+yogo.Tower.prototype.getNextDmgLevel = function() {
+    return this.dmgLevels[this.dmgLevel+1];
+};
+
+yogo.Tower.prototype.getNextRangeUpgradeTime = function() {
+    return this.upgradeTimings[this.rangeLevel+1];
+};
+
+yogo.Tower.prototype.getNextDmgUpgradeTime = function() {
+    return this.upgradeTimings[this.dmgLevel+1];
+};
+
+yogo.Tower.prototype.upgradeRange = function() {
+    this.rangeLevel++;
+    this.range = this.rangeLevels[this.rangeLevel];
+    this.gui.updateTower();
+};
+
+yogo.Tower.prototype.upgradeDmg = function() {
+    this.dmgLevel++;
+    this.dmg = this.dmgLevels[this.dmgLevel];
+    this.gui.updateTower();
 };
 
 yogo.Tower.prototype.update = function(dt) {

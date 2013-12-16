@@ -1,6 +1,6 @@
 yogo.Title = function() {
 
-    var titleString = 'Power Core Defence',
+    var titleString = 'Power Core Defense',
         redrawAll = true,
         playButtonHover = false,
         playButtonDirty = true;

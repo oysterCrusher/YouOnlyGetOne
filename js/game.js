@@ -48,6 +48,8 @@ yogo.Game = function() {
             towerBeingPlaced.x = tX;
             towerBeingPlaced.y = tY;
             towerBeingPlaced.timer = 0;
+        } else {
+            gui.onClick(c);
         }
     };
 
