@@ -118,7 +118,7 @@ yogo.GUI = function() {
                 // DPS
                 yogo.ctx.fillText('Damage  :  ' + activeTower.dmg.toString(), 728, 370);
                 // Range
-                yogo.ctx.fillText('Range  :  ' + activeTower.range.toString(), 728, 465);
+                yogo.ctx.fillText('Range  :  ' + activeTower.range.toFixed(1), 728, 465);
 
                 if (activeTower.canUpgradeDmg()) {
                     yogo.ctx.fillStyle = '#555555';

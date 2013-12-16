@@ -30,8 +30,14 @@ yogo.Tower = function(x0, y0, towerName, enemies, gui) {
 
     this.isShooting = false;
 
+    this.isBuilding = true;
     this.buildTime = 2000;
     this.buildProgress = 0;
+
+    this.isUpgradingDmg = false;
+    this.isUpgradingRange = false;
+    this.upgradeTime = 0;
+    this.upgradeTimer = 0;
 
     this.canvas = document.createElement('canvas');
     this.canvas.width = 39;
@@ -56,11 +62,11 @@ yogo.Tower.prototype.isAt = function(x, y) {
 };
 
 yogo.Tower.prototype.canUpgradeRange = function() {
-    return this.rangeLevel < this.rangeLevels.length - 1;
+    return this.rangeLevel < this.rangeLevels.length - 1 && !this.isUpgradingDmg && !this.isUpgradingRange && !this.isBuilding;
 };
 
 yogo.Tower.prototype.canUpgradeDmg = function() {
-    return this.dmgLevel < this.dmgLevels.length - 1;
+    return this.dmgLevel < this.dmgLevels.length - 1 && !this.isUpgradingDmg && !this.isUpgradingRange && !this.isBuilding;
 };
 
 yogo.Tower.prototype.getNextRangeLevel = function() {
@@ -80,14 +86,16 @@ yogo.Tower.prototype.getNextDmgUpgradeTime = function() {
 };
 
 yogo.Tower.prototype.upgradeRange = function() {
-    this.rangeLevel++;
-    this.range = this.rangeLevels[this.rangeLevel];
+    this.upgradeTimer = 0;
+    this.upgradeTime = this.upgradeTimings[this.rangeLevel + 1] * 1000;
+    this.isUpgradingRange = true;
     this.gui.updateTower();
 };
 
 yogo.Tower.prototype.upgradeDmg = function() {
-    this.dmgLevel++;
-    this.dmg = this.dmgLevels[this.dmgLevel];
+    this.upgradeTimer = 0;
+    this.upgradeTime = this.upgradeTimings[this.dmgLevel + 1] * 1000;
+    this.isUpgradingDmg = true;
     this.gui.updateTower();
 };
 
@@ -95,8 +103,28 @@ yogo.Tower.prototype.update = function(dt) {
     this.isShooting = false;
 
     if (this.active) {
-        if (this.buildProgress < this.buildTime) {
+        if (this.isBuilding) {
             this.buildProgress += dt;
+            if (this.buildProgress >= this.buildTime) {
+                this.isBuilding = false;
+                this.gui.updateTower();
+            }
+        } else if (this.isUpgradingRange) {
+            this.upgradeTimer += dt;
+            if (this.upgradeTimer >= this.upgradeTime) {
+                this.isUpgradingRange = false;
+                this.rangeLevel++;
+                this.range = this.rangeLevels[this.rangeLevel];
+                this.gui.updateTower();
+            }
+        } else if (this.isUpgradingDmg) {
+            this.upgradeTimer += dt;
+            if (this.upgradeTimer >= this.upgradeTime) {
+                this.isUpgradingDmg = false;
+                this.dmgLevel++;
+                this.dmg = this.dmgLevels[this.dmgLevel];
+                this.gui.updateTower();
+            }
         } else {
             // See if we need a new target
             if (this.target === null) {
@@ -138,11 +166,27 @@ yogo.Tower.prototype.updateSprite = function() {
         this.height
     );
     this.ctx.restore();
-    if (this.buildProgress < this.buildTime) {
+    if (this.isBuilding) {
         this.ctx.fillStyle = 'rgba(0,150,0,0.6)';
         this.ctx.beginPath();
         this.ctx.moveTo(20, 20);
         this.ctx.arc(20, 20, 35, -Math.PI / 2, Math.PI * (2 - 2 * this.buildProgress / this.buildTime - 0.5), false);
+        this.ctx.closePath();
+        this.ctx.fill();
+    }
+    if (this.isUpgradingRange) {
+        this.ctx.fillStyle = 'rgba(0,150,150,0.6)';
+        this.ctx.beginPath();
+        this.ctx.moveTo(20, 20);
+        this.ctx.arc(20, 20, 35, -Math.PI / 2, Math.PI * (2 - 2 * this.upgradeTimer / this.upgradeTime - 0.5), false);
+        this.ctx.closePath();
+        this.ctx.fill();
+    }
+    if (this.isUpgradingDmg) {
+        this.ctx.fillStyle = 'rgba(150,0,150,0.6)';
+        this.ctx.beginPath();
+        this.ctx.moveTo(20, 20);
+        this.ctx.arc(20, 20, 35, -Math.PI / 2, Math.PI * (2 - 2 * this.upgradeTimer / this.upgradeTime - 0.5), false);
         this.ctx.closePath();
         this.ctx.fill();
     }
