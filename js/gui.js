@@ -76,6 +76,7 @@ yogo.GUI = function() {
             yogo.ctx.textAlign = 'center';
             yogo.ctx.fillStyle = '#303030';
             yogo.ctx.fillRect(662, 302, 138, 40);
+            yogo.ctx.fillRect(662, 0, 138, 300);
             yogo.ctx.fillStyle = '#AAAAAA';
             yogo.ctx.fillText('Active Tower', 731, 325);
         }
