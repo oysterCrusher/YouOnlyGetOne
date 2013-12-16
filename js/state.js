@@ -44,8 +44,8 @@ yogo.State = function() {
         isDown = false;
         currentState.exit();
         previousState = currentState;
-        currentState.enter();
         currentState = states[newState];
+        currentState.enter();
     };
 
     this.loadLevel = function(nLevel) {

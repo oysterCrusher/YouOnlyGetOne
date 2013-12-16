@@ -6,8 +6,18 @@ yogo.GUI = function() {
         scoreDirty = true,
         timer = 0,
         staticDirty = true,
+        backButtonDirty = true,
         activeTower = null,
         towerDirty = true;
+
+    this.reset = function() {
+        coreHpDirty = true;
+        scoreDirty = true;
+        staticDirty = true;
+        backButtonDirty = true;
+        towerDirty = true;
+        activeTower = null;
+    };
 
     this.updateCoreHp = function(newHp) {
         coreHp = newHp;
@@ -53,6 +63,11 @@ yogo.GUI = function() {
                 }
             }
         }
+
+        // Or the menu button
+        if (c[0] >= 672 && c[0] <= 672 + 118 && c[1] >= 10 && c[1] <= 10 + 35) {
+            yogo.state.changeState('levels');
+        }
     };
 
     this.update = function(dt) {
@@ -79,6 +94,7 @@ yogo.GUI = function() {
             yogo.ctx.fillRect(662, 0, 138, 300);
             yogo.ctx.fillStyle = '#AAAAAA';
             yogo.ctx.fillText('Active Tower', 731, 325);
+            staticDirty = false;
         }
 
         if (coreHpDirty) {
@@ -144,6 +160,17 @@ yogo.GUI = function() {
                 yogo.ctx.fillText('None selected', 731, 450);
             }
             towerDirty = false;
+        }
+
+        if (backButtonDirty) {
+            yogo.ctx.fillStyle = '#0071C1';
+            yogo.ctx.fillRect(672, 10, 118, 35);
+            yogo.ctx.font = '17pt "Open Sans" Sans-Serif';
+            yogo.ctx.textBaseline = 'middle';
+            yogo.ctx.textAlign = 'center';
+            yogo.ctx.fillStyle = '#303030';
+            yogo.ctx.fillText('Menu', 672 + 59, 10 + 17);
+            backButtonDirty = false;
         }
 
     }

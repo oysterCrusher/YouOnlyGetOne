@@ -16,7 +16,7 @@ yogo.Game = function() {
         towerBeingPlaced = { x: 0, y: 0, timer: 0, canvas: null, ctx: null };
 
     this.init = function() {
-        map.loadMap(enemies, 0);
+//        map.loadMap(enemies, 0);
         towerBeingPlaced.canvas = document.createElement('canvas');
         towerBeingPlaced.width = 39;
         towerBeingPlaced.height = 39;
@@ -27,9 +27,9 @@ yogo.Game = function() {
         isPlacingTower = false;
     };
 
-//    this.exit = function() {
-//        console.log('game exit');
-//    };
+    this.exit = function() {
+
+    };
 
     this.onDown = function(c) {
         // Convert mouse coords to tile coords
@@ -65,6 +65,9 @@ yogo.Game = function() {
 
     this.loadMap = function(n) {
         map.loadMap(enemies, n);
+        enemies.reset();
+        towers.reset();
+        gui.reset();
     };
 
     this.update = function(dt) {

@@ -12,7 +12,7 @@ yogo.Tower = function(x0, y0, towerName, enemies, gui) {
     this.halfHeight = this.height / 2;
 
     // Upgrade timings
-    this.upgradeTimings = [0, 1.5, 1.7, 1.8, 1.9];
+    this.upgradeTimings = [0, 1.8, 1.9, 2.1, 2.3];
 
     // Damage dealt over 1000 ms
     this.dmgLevel = 0;

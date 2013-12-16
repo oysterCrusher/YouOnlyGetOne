@@ -48,6 +48,11 @@ yogo.Towers = function(map, enemies, gui) {
         this.gui.setTower(currentActive);
     };
 
+    this.reset = function() {
+        pool = [];
+        currentActive = null;
+    };
+
     this.update = function(dt) {
         // Update the position of all the enemies
         for (var i = 0; i < pool.length; i++) {

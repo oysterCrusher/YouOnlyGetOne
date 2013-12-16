@@ -45,6 +45,7 @@ yogo.Map = function(g) {
 
         coreX = yogo.mapList[n].coreX;
         coreY =  yogo.mapList[n].coreY;
+        coreHp = 10000;
 
         spawns = yogo.mapList[n].spawns;
         nSpawns = yogo.mapList[n].spawns.length;

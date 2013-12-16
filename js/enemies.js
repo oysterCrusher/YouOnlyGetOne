@@ -13,6 +13,10 @@ yogo.Enemies = function(map, gui) {
         }
     };
 
+    this.reset = function() {
+        pool = [];
+    };
+
     this.render = function() {
         for (var i = 0; i < pool.length; i++) {
             pool[i].render();

@@ -6,8 +6,8 @@ yogo.LevelSelect = function() {
         button1Dirty = true,
         button2Hover = false,
         button2Dirty = true,
-        backButtonHover = false,
-        backButtonDirty = true;
+        backButtonHover = false;
+//        backButtonDirty = true;
 
     this.init = function() {
 

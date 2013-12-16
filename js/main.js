@@ -19,28 +19,28 @@ window.onload = function() {
 
     yogo.scale = 1;
 
-    function checkResize() {
-        var windowWidth = window.innerWidth,
-            windowHeight = window.innerHeight,
-            scaleWidth = windowWidth / 800,
-            scaleHeight = windowHeight / 600;
-
-        yogo.canvas.style.webkitTransformOrigin = '50% 0';
-        yogo.canvas.style.transformOrigin = '50% 0';
-        yogo.canvas.style.oTransotransformOrigin = '50% 0';
-
-        if (scaleWidth < scaleHeight) {
-            yogo.canvas.style.transform = 'scale(' + scaleWidth + ')';
-            yogo.canvas.style.oTransform = 'scale(' + scaleWidth + ')';
-            yogo.canvas.style.webkitTransform = 'scale(' + scaleWidth + ')';
-            yogo.scale = scaleWidth;
-        } else {
-            yogo.canvas.style.transform = 'scale(' + scaleHeight + ')';
-            yogo.canvas.style.oTransform = 'scale(' + scaleHeight + ')';
-            yogo.canvas.style.webkitTransform = 'scale(' + scaleHeight+ ')';
-            yogo.scale = scaleHeight;
-        }
-    }
+//    function checkResize() {
+//        var windowWidth = window.innerWidth,
+//            windowHeight = window.innerHeight,
+//            scaleWidth = windowWidth / 800,
+//            scaleHeight = windowHeight / 600;
+//
+//        yogo.canvas.style.webkitTransformOrigin = '50% 0';
+//        yogo.canvas.style.transformOrigin = '50% 0';
+//        yogo.canvas.style.oTransotransformOrigin = '50% 0';
+//
+//        if (scaleWidth < scaleHeight) {
+//            yogo.canvas.style.transform = 'scale(' + scaleWidth + ')';
+//            yogo.canvas.style.oTransform = 'scale(' + scaleWidth + ')';
+//            yogo.canvas.style.webkitTransform = 'scale(' + scaleWidth + ')';
+//            yogo.scale = scaleWidth;
+//        } else {
+//            yogo.canvas.style.transform = 'scale(' + scaleHeight + ')';
+//            yogo.canvas.style.oTransform = 'scale(' + scaleHeight + ')';
+//            yogo.canvas.style.webkitTransform = 'scale(' + scaleHeight+ ')';
+//            yogo.scale = scaleHeight;
+//        }
+//    }
 
 //    window.addEventListener('resize', checkResize, false);
 
